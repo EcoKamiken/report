@@ -54,7 +54,7 @@ def low_power_alert(site_id):
             if (df.sum()[0]/60) < 2:
                 return True, df.sum()[0]/60
         except IndexError:
-            pass
+            break
     return False
 
 
