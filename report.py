@@ -41,6 +41,23 @@ def get_daily_report(site_id):
     graph.create_graph_image(g)
     return res
 
+def low_power_alert(site_id):
+    dt = datetime.now() - timedelta(hours=1)
+    with conn.cursor() as cursor:
+        try:
+            t1 = dt.strftime("%Y-%m-%d %H:00:00")
+            t2 = dt.strftime("%Y-%m-%d %H:59:59")
+            sql = "SELECT wattage FROM sensors WHERE id = %s AND created_at BETWEEN %s AND %s"
+            cursor.execute(sql, (site_id, t1, t2))
+            l = cursor.fetchall()
+            df = pd.io.json.json_normalize(l)
+            if (df.sum()[0]/60) < 5:
+                return True, df.sum()[0]/60
+        except IndexError:
+            pass
+    return False
+
+
 def get_site_info():
     with conn.cursor() as cursor:
         sql = "SELECT id, name FROM sites"

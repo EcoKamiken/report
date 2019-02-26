@@ -10,7 +10,7 @@ from email.mime.multipart import MIMEMultipart
 import report
 from password.password import GMAIL_PASS
 
-def create_message(from_addr, to_addr, subject, body):
+def create_message(from_addr, to_addr, subject, body, fig=False):
     msg = MIMEMultipart()
     msg['Subject'] = subject
     msg['From'] = from_addr
@@ -19,9 +19,11 @@ def create_message(from_addr, to_addr, subject, body):
     text = MIMEText(body)
     msg.attach(text)
 
-    img = open('figure.png', 'rb').read()
-    image = MIMEImage(img, name=os.path.basename('figure.png'))
-    msg.attach(image)
+    if fig:
+        img = open('figure.png', 'rb').read()
+        image = MIMEImage(img, name=os.path.basename('figure.png'))
+        msg.attach(image)
+
     return msg
 
 def send(from_addr, to_addr, msg):
@@ -41,5 +43,5 @@ if __name__ == '__main__':
     for site in sites:
         subject = 'daily report: {}'.format(site['name'])
         body = report.get_daily_report(site['id'])
-        msg = create_message(from_addr, to_addr, subject, body)
+        msg = create_message(from_addr, to_addr, subject, body, fig=True)
         send(from_addr, to_addr, msg)
