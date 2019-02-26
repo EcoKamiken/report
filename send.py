@@ -39,9 +39,10 @@ if __name__ == '__main__':
     sites = report.get_site_info()
 
     from_addr = 'kamiken.nkjm@gmail.com'
-    to_addr = 'nakajima@kamiken.info'
+    to_addr = 'kamiken.nkjm@gmail.com,nakajima@kamiken.info'
     for site in sites:
+        print(site['name'])
         subject = 'daily report: {}'.format(site['name'])
         body = report.get_daily_report(site['id'])
         msg = create_message(from_addr, to_addr, subject, body, fig=True)
-        send(from_addr, to_addr, msg)
+        send(from_addr, to_addr.split(','), msg)

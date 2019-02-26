@@ -37,7 +37,7 @@ def get_daily_report(site_id):
                 g.append((t1, df.sum()[0]/60))
                 res += t1 + '\t' + str(s) + '[kWh]\n'
             except IndexError:
-                pass
+                break
     graph.create_graph_image(g)
     return res
 
@@ -51,7 +51,7 @@ def low_power_alert(site_id):
             cursor.execute(sql, (site_id, t1, t2))
             l = cursor.fetchall()
             df = pd.io.json.json_normalize(l)
-            if (df.sum()[0]/60) < 5:
+            if (df.sum()[0]/60) < 2:
                 return True, df.sum()[0]/60
         except IndexError:
             pass
