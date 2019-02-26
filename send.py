@@ -39,7 +39,7 @@ if __name__ == '__main__':
     sites = report.get_site_info()
 
     from_addr = 'kamiken.nkjm@gmail.com'
-    to_addr = 'kamiken.nkjm@gmail.com,nakajima@kamiken.info'
+    to_addr = 'kamiken@sky.plala.or.jp,kamiken.nkjm@gmail.com,nakajima@kamiken.info'
     for site in sites:
         print(site['name'])
         subject = 'daily report: {}'.format(site['name'])
